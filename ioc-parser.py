@@ -45,7 +45,7 @@ import sys
 import fnmatch
 import argparse
 import re
-from StringIO import StringIO
+from io import StringIO
 try:
     import configparser as ConfigParser
 except ImportError:
