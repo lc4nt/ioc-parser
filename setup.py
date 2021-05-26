@@ -34,7 +34,7 @@ setup(
     name="iocparser3",
     version=__version__,
     description="The original ioc-parser script from Armin Buescher ported to python3 and converted to package",
-    long_description=read("README.MD"),
+    long_description=read("README.md"),
     long_description_content_type="text/markdown",
     author="Armin Buescher",
     author_email="@armbues",
