@@ -52,5 +52,5 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     python_requires=">=3.8",
-    entry_points={"console_scripts": ["iocparser=iocparser3.ioc-parser:main"]},
+    entry_points={"console_scripts": ["iocparser=iocparser3.iocparser:main"]},
 )
