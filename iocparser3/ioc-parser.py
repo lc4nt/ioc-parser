@@ -78,17 +78,18 @@ try:
 except ImportError:
     pass
 
+from pathlib import Path
+
 # Import additional project source files
-import output
-from whitelist import WhiteList
+from iocparser3 import output
+from iocparser3.whitelist import WhiteList
 
 class IOC_Parser(object):
     patterns = {}
 
-    def __init__(self, patterns_ini, input_format = 'pdf', output_format='csv', dedup=False, library='pypdf2'):
-        basedir = os.path.dirname(os.path.abspath(__file__))
+    def __init__(self, patterns_ini, input_format = 'pdf', output_format='csv', dedup=False, library='pypdf2', whitelist_dir=""):
         self.load_patterns(patterns_ini)
-        self.whitelist = WhiteList(basedir)
+        self.whitelist = WhiteList(whitelist_dir)
         self.handler = output.getHandler(output_format)
         self.dedup = dedup
 
@@ -238,10 +239,10 @@ class IOC_Parser(object):
             for elem in html:
                 if elem.parent.name in ['style', 'script', '[document]', 'head', 'title']:
                     continue
-                elif re.match('<!--.*-->', unicode(elem)):
+                elif re.match('<!--.*-->', str(elem)):
                     continue
                 else:
-                    text += unicode(elem)
+                    text += str(elem)
 
             self.handler.print_header(fpath)
             self.parse_page(fpath, text, 1)
@@ -282,16 +283,21 @@ class IOC_Parser(object):
         except Exception as e:
             self.handler.print_error(path, e)
 
-if __name__ == "__main__":
+def main():
+
+    default_ini = Path(__file__).parent / "res" / "patterns.ini"
+    default_whitelist_dir = Path(__file__).parent / "res" / "whitelists"
+
     argparser = argparse.ArgumentParser()
     argparser.add_argument('PATH', action='store', help='File/directory/URL to report(s)')
-    argparser.add_argument('-p', dest='INI', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'patterns.ini'), help='Pattern file')
+    argparser.add_argument('-p', dest='INI', default=default_ini, help='Pattern file')
     argparser.add_argument('-i', dest='INPUT_FORMAT', default='pdf', help='Input format (pdf/txt)')
     argparser.add_argument('-o', dest='OUTPUT_FORMAT', default='csv', help='Output format (csv/json/yara)')
     argparser.add_argument('-d', dest='DEDUP', action='store_true', default=False, help='Deduplicate matches')
     argparser.add_argument('-l', dest='LIB', default='pdfminer', help='PDF parsing library (pypdf2/pdfminer)')
+    argparser.add_argument('-w', dest='WHITELIST', default=default_whitelist_dir, help='Directory containing the excluded patterns, in their respective .ini files')
 
     args = argparser.parse_args()
 
-    parser = IOC_Parser(args.INI, args.INPUT_FORMAT, args.OUTPUT_FORMAT, args.DEDUP, args.LIB)
+    parser = IOC_Parser(args.INI, args.INPUT_FORMAT, args.OUTPUT_FORMAT, args.DEDUP, args.LIB, args.WHITELIST)
     parser.parse(args.PATH)
