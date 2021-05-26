@@ -1,4 +1,7 @@
-# ioc-parser
+# ioc-parser-3
+*This tool was forked from https://github.com/PaloAltoNetworks/ioc-parser and adapted to run with python3.* 
+
+
 IOC Parser is a tool to extract indicators of compromise from security reports in PDF format. A good collection of APT related reports with many IOCs can be found here: [APTNotes](https://github.com/kbandla/APTnotes).
 
 ## Usage
@@ -11,12 +14,4 @@ IOC Parser is a tool to extract indicators of compromise from security reports i
 * *-l LIB* Parsing library
 
 ## Requirements
-One of the following PDF parsing libraries:
-* [PyPDF2](https://github.com/mstamy2/PyPDF2) - *pip install pypdf2*
-* [pdfminer](https://github.com/euske/pdfminer) - *pip install pdfminer*
-
-For HTML parsing support:
-* [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/) - *pip install beautifulsoup4*
-
-For HTTP(S) support:
-* [requests](http://docs.python-requests.org/en/latest/) - *pip install requests*
+See `requirements.txt`
