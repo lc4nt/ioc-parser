@@ -1,7 +1,12 @@
 import os
 
-from pip._internal.download import PipSession
-from pip._internal.req import parse_requirements
+try:
+    from pip._internal.download import PipSession
+    from pip._internal.req import parse_requirements
+except ImportError:
+    from pip._internal.network.session import PipSession
+    from pip._internal.req import parse_requirements
+
 from setuptools import find_packages, setup
 
 from iocparser3 import __version__
